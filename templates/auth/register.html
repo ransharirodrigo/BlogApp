@@ -1,6 +1,47 @@
-{% extends "base.html%}
+{% extends "auth/base.html" %}
 
 {% block content%}
+<div class="row vh-100 d-flex justify-content-center align-items-center">
+    <div class="col-12 col-md-8 col-lg-6 ">
+        <h3 class="text-center">New User ? Register Here</h3>
 
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <div class="mt-3">
+                <label for="first_name" class="form-label">First Name:</label>
+                <input type="text" id="first_name" name="first_name" class="form-control"
+                    placeholder="Enter your first name" required>
+            </div>
+
+            <div class="mt-3">
+                <label for="last_name" class="form-label">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" class="form-control"
+                    placeholder="Enter your last name" required>
+            </div>
+
+            <div class="mt-3">
+                <label for="username" class="form-label">Username:</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Choose a username"
+                    required>
+            </div>
+
+            <div class="mt-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter a password"
+                    required>
+            </div>
+
+            <div class="mt-3">
+                <div class="row justify-content-center">
+                    <button class="btn btn-info col-6 text-white">Sign Up</button>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
 
 {% endblock%}
