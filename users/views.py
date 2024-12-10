@@ -25,7 +25,10 @@ def register(request):
             user_registration_form.save()
             return render(request, "auth/login.html", {})
     else:
-        return render(request, "auth/register.html", {})
+        if request.user.is_authenticated:  
+            return redirect('home')
+        else:
+            return render(request, "auth/register.html", {})
 
 
 @never_cache
