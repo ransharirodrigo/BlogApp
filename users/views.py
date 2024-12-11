@@ -66,5 +66,4 @@ def profile(request):
     user_email = request.session.get('user_email')
    
     user = CustomUser.objects.filter(email=user_email).first()
-    print(user.first_name)
     return render(request,"users/profile.html",{'user': user})
