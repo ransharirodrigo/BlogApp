@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate
 from django.views.decorators.cache import never_cache
+from django.contrib import messages 
 
 from .forms import UserRegistrationForm
 
@@ -17,9 +18,9 @@ def register(request):
         
         # Check if email or username already exists
         if CustomUser.objects.filter(email=email).exists():
-            print("A user is already registered with this email.")
+            messages.error(request, "A user is already registered with this email")
         elif CustomUser.objects.filter(username=username).exists():
-            print("A user is already registered with this username.")
+            messages.error(request, "A user is already registered with this username.")
         else:
             # Register the user to the database
             user_registration_form.save()
@@ -29,6 +30,8 @@ def register(request):
             return redirect('home')
         else:
             return render(request, "auth/register.html", {})
+
+    return render(request, "auth/register.html", {})
 
 @never_cache
 def login(request):
@@ -45,7 +48,8 @@ def login(request):
             request.session['user_email']=user.email 
             return redirect('home')  
         else:
-              print("not found")
+            messages.error(request, "Invalid username or password!")
+            return render(request, "auth/login.html")
 
     else:
         # Check if the user already logged in 
