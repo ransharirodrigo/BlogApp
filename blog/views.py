@@ -4,11 +4,14 @@ from .models import Blog
 
 from .forms import BlogCreationForm
 
+from users.models import CustomUser
+
 # Create your views here.
 def home(request):
 
     if 'user_email' in request.session: 
-        blog_posts = Blog.objects.all()
+        user_email = request.session.get('user_email') 
+        blog_posts = Blog.objects.filter(user__email=user_email)
 
         context = {"blog_posts": blog_posts}
         return render(request,"home.html",context)
@@ -22,7 +25,13 @@ def add_new_blog_post(request):
         blog_creation_form = BlogCreationForm(request.POST)
         
         if blog_creation_form.is_valid():
-            blog_creation_form.save()
+            user_email = request.session.get('user_email')
+            user = CustomUser.objects.filter(email=user_email).first()
+
+            blog =  blog_creation_form.save(commit=False)
+            blog.user = user
+            blog.save()
+
             return redirect('home')  
         else:
             print("Please fill required fields")
