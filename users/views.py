@@ -25,11 +25,10 @@ def register(request):
             user_registration_form.save()
             return render(request, "auth/login.html", {})
     else:
-        if request.user.is_authenticated:  
+        if 'user_email' in request.session:    
             return redirect('home')
         else:
             return render(request, "auth/register.html", {})
-
 
 @never_cache
 def login(request):
@@ -39,18 +38,33 @@ def login(request):
         username=request.POST.get("username")
         password=request.POST.get("password")
 
-        users = CustomUser.objects.filter(username=username,password=password)
+        user = CustomUser.objects.filter(username=username,password=password)
 
-        if users.exists():
+        if user.exists():    
+            user = user.first() 
+            request.session['user_email']=user.email 
             return redirect('home')  
         else:
               print("not found")
 
     else:
         # Check if the user already logged in 
-        if request.user.is_authenticated:  
+        if 'user_email' in request.session:  
             return redirect('home')
         else:
             # Rendering the login page
             return render(request,"auth/login.html",{})
+
+
+def signout(request):
+
+    request.session.flush()  
+    return redirect('login')
+
+def profile(request):
+
+    user_email = request.session.get('user_email')
    
+    user = CustomUser.objects.filter(email=user_email).first()
+    print(user.first_name)
+    return render(request,"users/profile.html",{'user': user})

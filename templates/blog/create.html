@@ -5,7 +5,8 @@
 <div class="row justify-content-center">
     <div class="col-md-8">
         <h2 class="text-center mb-4">Add New Blog Post</h2>
-        <form action="" method="POST">
+        <form action="{% url 'create_blog'%}" method="POST">
+            {% csrf_token %}
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Enter post title" required>
@@ -15,7 +16,13 @@
                 <textarea class="form-control" id="description" name="description" rows="5"
                     placeholder="Enter post description" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Add Post</button>
+            <div class="row d-flex justify-content-center">
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <button type="submit" class="btn btn-warning w-100">Add Post</button>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>

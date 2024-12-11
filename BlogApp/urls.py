@@ -19,11 +19,13 @@ from django.urls import path,include
 
 from users.views import register
 from users import urls as users_urls
+from blog import urls as blog_urls
 from blog.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("user/",include(users_urls)),
     path("",register,name="register"),
-    path("home",home,name="home")
+    path("home",home,name="home"),
+    path("blog",include(blog_urls))
 ]
